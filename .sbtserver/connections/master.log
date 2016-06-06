@@ -1,0 +1,36 @@
+New log file opened at Mon Jun 06 15:45:38 CLT 2016 by 6184@Dell-Jose
+Taking next connection to: 57762
+New client attempting to connect on port: 57763-57762
+  Address = /10.42.207.91:57762
+This client on port 57763 has uuid 87ef2a06-97ac-4f25-87e1-4cf50d8e0eea configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-87ef2a06-97ac-4f25-87e1-4cf50d8e0eea
+Taking next connection to: 57762
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 57762
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 57762
+New client attempting to connect on port: 58246-57762
+  Address = /10.42.207.91:57762
+Handshake exception on socket: 58246
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 57762
+New client attempting to connect on port: 58247-57762
+  Address = /10.42.207.91:57762
+This client on port 58247 has uuid b11fbda8-b0ed-4925-8e67-94b1e64157cf configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-b11fbda8-b0ed-4925-8e67-94b1e64157cf
+Taking next connection to: 57762
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
