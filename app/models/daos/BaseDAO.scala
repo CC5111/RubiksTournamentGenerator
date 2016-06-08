@@ -1,15 +1,34 @@
 package models.daos
 
+import javax.inject.Inject
+
+import _root_.slick.driver.JdbcProfile
 import models.entities.{Supplier, BaseEntity}
 import models.persistence.SlickTables
 import models.persistence.SlickTables.{SuppliersTable, BaseTable}
 import play.api.Play
+import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfig}
 import slick.backend.DatabaseConfig
 import slick.driver.JdbcProfile
 import slick.lifted.{CanBeQueryCondition}
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
+import models.entities._
+
+@Singleton
+class TorneoDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) {
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
+  import dbConfig.driver.api._
+  import dbConfig.db
+
+}
+
+
+
+
+
 
 trait AbstractBaseDAO[T,A] {
   def insert(row : A): Future[Long]
