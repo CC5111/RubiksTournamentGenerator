@@ -44,7 +44,7 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
   class CategoryTable(tag: Tag) extends BaseTable[Category](tag,"category"){
     def title = column[String]("title")
     def tournament = column[Long]("tournament")
-    def time_limit = column[Integer]("time_limit")
+    def time_limit = column[Int]("time_limit")
     def format = column[Long]("format")
 
     def * = (id, title, tournament, time_limit, format) <> (Category.tupled, Category.unapply _)

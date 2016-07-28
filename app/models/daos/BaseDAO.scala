@@ -1,13 +1,11 @@
 package models.daos
 
-import javax.inject.Inject
+import javax.inject.{Singleton, Inject}
 
-import _root_.slick.driver.JdbcProfile
 import models.entities.{Supplier, BaseEntity}
 import models.persistence.SlickTables
 import models.persistence.SlickTables.{SuppliersTable, BaseTable}
 import play.api.Play
-import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfig}
 import slick.backend.DatabaseConfig
 import slick.driver.JdbcProfile
@@ -102,7 +100,7 @@ class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
       Future{0}
   }
 
-  def getParticipants() = {
+  def getAllParticipant = {
     for {
       e <- tableQ
       ep <- SlickTables.eventParticipantQ if e.id === ep.participantId
