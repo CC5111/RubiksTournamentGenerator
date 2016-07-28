@@ -18,12 +18,105 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import models.entities._
 
 @Singleton
-class TorneoDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) {
+class TournamentDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider){
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   import dbConfig.driver.api._
   import dbConfig.db
 
+  protected val tableQ = SlickTables.tournamentQ
+
+  def all: Future[Seq[Tournament]] = {
+    db.run(tableQ.result)
+  }
+
+  def insert(tournament: Tournament): Future[Long] ={
+    db.run(tableQ returning tableQ.map(_.id) += tournament)
+  }
+
+
+  def byId(id: Long): Future[Option[Tournament]] = {
+    db.run(tableQ.filter(_.id === id).result.headOption)
+  }
+
+  def update(tournament: Tournament): Future[Int] = {
+    if (tournament.isValid)
+      db.run(tableQ.filter(_.id === tournament.id).update(tournament))
+    else
+      Future{0}
+  }
 }
+
+@Singleton
+class CategoryDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider){
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
+  import dbConfig.driver.api._
+  import dbConfig.db
+
+  protected val tableQ = SlickTables.categoryQ
+
+  def all: Future[Seq[Category]] = {
+    db.run(tableQ.result)
+  }
+
+  def insert(category: Category): Future[Long] ={
+    db.run(tableQ returning tableQ.map(_.id) += category)
+  }
+
+
+  def byId(id: Long): Future[Option[Category]] = {
+    db.run(tableQ.filter(_.id === id).result.headOption)
+  }
+
+  def update(category: Category): Future[Int] = {
+    if (category.isValid)
+      db.run(tableQ.filter(_.id === category.id).update(category))
+    else
+      Future{0}
+  }
+}
+
+@Singleton
+class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider){
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
+  import dbConfig.driver.api._
+  import dbConfig.db
+
+  protected val tableQ = SlickTables.eventQ
+
+  def all: Future[Seq[Event]] = {
+    db.run(tableQ.result)
+  }
+
+  def insert(event: Event): Future[Long] ={
+    db.run(tableQ returning tableQ.map(_.id) += event)
+  }
+
+  def byId(id: Long): Future[Option[Event]] = {
+    db.run(tableQ.filter(_.id === id).result.headOption)
+  }
+
+  def update(event: Event): Future[Int] = {
+    if (event.isValid)
+      db.run(tableQ.filter(_.id === event.id).update(event))
+    else
+      Future{0}
+  }
+
+  def getParticipants() = {
+    for {
+      e <- tableQ
+      ep <- SlickTables.eventParticipantQ if e.id === ep.participantId
+      p <- SlickTables.participantQ if ep.participantId === p.id
+    } yield p
+  }
+
+
+}
+
+
+
+
+
 
 
 
@@ -87,5 +180,7 @@ abstract class BaseDAO[T <: BaseTable[A], A <: BaseEntity]() extends AbstractBas
   def deleteByFilter[C : CanBeQueryCondition](f:  (T) => C): Future[Int] = {
     db.run(tableQ.withFilter(f).delete)
   }
+
+
 
 }

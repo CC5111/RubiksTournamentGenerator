@@ -5,6 +5,8 @@ import play.api.Play
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfig}
 import slick.driver.JdbcProfile
 
+import models.entities._
+
 /**
   * The companion object.
   */
@@ -34,33 +36,63 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
     def start_date = column[java.sql.Timestamp]("start_date")
     def end_date = column[java.sql.Timestamp]("end_date")
 
-    def * = (id, place, organizer, delegated, start_date, end_date) <> (Tournament.tuppled, Tournament.unapply)
+    def * = (id, place, organizer, delegated, start_date, end_date) <> (Tournament.tupled, Tournament.unapply _)
   }
+
+  val tournamentQ = TableQuery[TournamentTable]
 
   class CategoryTable(tag: Tag) extends BaseTable[Category](tag,"category"){
     def title = column[String]("title")
     def tournament = column[Long]("tournament")
-    time_limit: Integer,
-    format: Integer
+    def time_limit = column[Integer]("time_limit")
+    def format = column[Long]("format")
+
+    def * = (id, title, tournament, time_limit, format) <> (Category.tupled, Category.unapply _)
   }
+
+  val categoryQ = TableQuery[CategoryTable]
 
   class EventTable(tag: Tag) extends BaseTable[Event](tag,"event"){
+    def start_date = column[java.sql.Timestamp]("start_date")
+    def round = column[Int]("round")
+    def categoryId = column[Long]("category_id")
 
+    def * = (id, start_date, round, categoryId) <> (Event.tupled, Event.unapply _)
   }
 
-  class ResultTable(tag: Tag) extends BaseTable[Result](tag,"result"){
-
-  }
+  val eventQ = TableQuery[EventTable]
 
   class ParticipantTable(tag: Tag) extends BaseTable[Participant](tag,"participant"){
+    def name = column[String]("name")
+    def rut = column[Long]("rut")
+    def email = column[String]("email")
+    def WCAID = column[String]("WCAID")
+    def gender = column[String]("gender")
+    def birth_date = column[java.sql.Date]("birth_date")
 
+    def * = (id, name, rut, email, WCAID, gender, birth_date) <> (Participant.tupled, Participant.unapply _)
   }
 
-  class EventParaticipantTable(tag: Tag) extends BaseTable[EventParaticipant](tag,"event_paraticipant"){
+  val participantQ = TableQuery[ParticipantTable]
 
+  class EventParticipantTable(tag: Tag) extends BaseTable[EventParticipant](tag, "event_participant"){
+    def eventId = column[Long]("event_id")
+    def participantId = column[Long]("participant_id")
+
+    def * = (id, eventId, participantId) <> (EventParticipant.tupled, EventParticipant.unapply _)
   }
 
-  class UserAdminTable(tag: Tag) extends BaseTable[UserAdmin](tag,"user_admin"){
+  val eventParticipantQ = TableQuery[EventParticipantTable]
 
+
+  class ResultTable(tag: Tag) extends BaseTable[Result](tag, "result"){
+    def participantId = column[Long]("participant_id")
+    def eventId = column[Long]("event_id")
+    def time = column[Int]("time")
+
+    def * = (id, participantId, eventId, time) <> (Result.tupled, Result.unapply _)
   }
+
+  val resultQ = TableQuery[ResultTable]
 }
+
