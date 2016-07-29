@@ -112,6 +112,96 @@ class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
 }
 
 
+@Singleton
+class ParticipantDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider){
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
+  import dbConfig.driver.api._
+  import dbConfig.db
+
+  protected val tableQ = SlickTables.participantQ
+
+  def all: Future[Seq[Participant]] = {
+    db.run(tableQ.result)
+  }
+
+  def insert(participant: Participant): Future[Long] ={
+    db.run(tableQ returning tableQ.map(_.id) += participant)
+  }
+
+  def byId(id: Long): Future[Option[Participant]] = {
+    db.run(tableQ.filter(_.id === id).result.headOption)
+  }
+
+  def update(participant: Participant): Future[Int] = {
+    if (participant.isValid)
+      db.run(tableQ.filter(_.id === participant.id).update(participant))
+    else
+      Future{0}
+  }
+
+
+}
+
+@Singleton
+class EventParticipantDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider){
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
+  import dbConfig.driver.api._
+  import dbConfig.db
+
+  protected val tableQ = SlickTables.eventParticipantQ
+
+  def all: Future[Seq[EventParticipant]] = {
+    db.run(tableQ.result)
+  }
+
+  def insert(eventParticipant: EventParticipant): Future[Long] ={
+    db.run(tableQ returning tableQ.map(_.id) += eventParticipant)
+  }
+
+  def byId(id: Long): Future[Option[EventParticipant]] = {
+    db.run(tableQ.filter(_.id === id).result.headOption)
+  }
+
+  def update(eventParticipant: EventParticipant): Future[Int] = {
+    if (eventParticipant.isValid)
+      db.run(tableQ.filter(_.id === eventParticipant.id).update(eventParticipant))
+    else
+      Future{0}
+  }
+
+
+}
+
+@Singleton
+class ResultsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider){
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
+  import dbConfig.driver.api._
+  import dbConfig.db
+
+  protected val tableQ = SlickTables.resultQ
+
+  def all: Future[Seq[Result]] = {
+    db.run(tableQ.result)
+  }
+
+  def insert(result: Result): Future[Long] ={
+    db.run(tableQ returning tableQ.map(_.id) += result)
+  }
+
+  def byId(id: Long): Future[Option[Result]] = {
+    db.run(tableQ.filter(_.id === id).result.headOption)
+  }
+
+  def update(result: Result): Future[Int] = {
+    if (result.isValid)
+      db.run(tableQ.filter(_.id === result.id).update(result))
+    else
+      Future{0}
+  }
+
+
+}
+
 
 
 
