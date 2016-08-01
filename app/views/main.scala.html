@@ -1,0 +1,47 @@
+@(title: String)(content: Html)
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Torneos Rubiks: @{title}</title>
+        <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/bootstrap.min.css")'>
+        <script src='@routes.Assets.versioned("javascripts/jquery-3.1.0.min.js")'></script>
+        <script src='@routes.Assets.versioned("javascripts/bootstrap.min.js")'></script>
+    </head>
+    <body>
+        <div class="header">
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">RUBIKS</a>
+                    </div>
+
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="#">Torneos</a>
+                            </li>
+                            <li>
+                                <a href="#">Estadísticas</a>
+                            </li>
+                            <li>
+                                <a href="#">Medallero</a>
+                            </li>
+                            <li>
+                                <a href="#">Records</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+        <div class="content">
+            @{content}
+        </div>
+
+
+    </body>
+</html>
