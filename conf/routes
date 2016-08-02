@@ -2,7 +2,12 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET     /index                         controllers.RubiksController.index
+GET     /                      controllers.RubiksController.index
+
+GET     /tournaments            controllers.RubiksController.indexTournament
+#GET     /Tournament/modify     controllers.RubiksController.modifyTournament
+#GET     /Tournament/create     controllers.RubiksController.createTournament
+#GET     /Tournament/:name      controllers.RubiksController.showTournament(name : String)
 
 
 # An example controller showing how to write asynchronous code
@@ -11,4 +16,3 @@ POST    /supplier                    controllers.SuppliersController.insertSuppl
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-

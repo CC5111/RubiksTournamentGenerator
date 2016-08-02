@@ -32,4 +32,10 @@ class RubiksController @Inject()()(implicit ec: ExecutionContext, system: ActorS
   def index = Action{implicit request =>
     Ok(views.html.index())
   }
+
+  def indexTournament = Action{implicit request =>
+    Ok(views.html.tournament())
+  }
+
+
 }
