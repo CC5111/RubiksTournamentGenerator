@@ -37,5 +37,5 @@ class RubiksController @Inject()()(implicit ec: ExecutionContext, system: ActorS
     Ok(views.html.tournament())
   }
 
-
+  
 }
