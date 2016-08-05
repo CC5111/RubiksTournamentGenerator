@@ -6,10 +6,10 @@ GET     /                      controllers.RubiksController.index
 
 GET     /tournaments            controllers.RubiksController.indexTournament
 #GET     /Tournament/modify     controllers.RubiksController.modifyTournament
-#GET     /Tournament/create     controllers.RubiksController.createTournament
+GET     /tournament/create     controllers.RubiksController.createTournament
 #GET     /Tournament/:name      controllers.RubiksController.showTournament(name : String)
 
-GET     /records                controllers.RecordsController.indexRecords()
+GET     /records                controllers.RecordsController.indexRecords
 
 # An example controller showing how to write asynchronous code
 GET     /supplier/:id                controllers.SuppliersController.supplier(id : Long)

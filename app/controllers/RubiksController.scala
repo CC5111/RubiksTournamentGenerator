@@ -28,7 +28,9 @@ import play.api.Play.current
   */
 
 @Singleton
-class RubiksController @Inject()()(implicit ec: ExecutionContext, system: ActorSystem, mat: akka.stream.Materializer) extends Controller {
+class RubiksController @Inject()(tournamentDAO: TournamentDAO)
+                                (implicit ec: ExecutionContext, system: ActorSystem, mat: akka.stream.Materializer) extends Controller {
+
   def index = Action{implicit request =>
     Ok(views.html.index())
   }
@@ -37,5 +39,11 @@ class RubiksController @Inject()()(implicit ec: ExecutionContext, system: ActorS
     Ok(views.html.tournament())
   }
 
+  def createTournament = Action{implicit request =>
+    Ok(views.html.tournament_creation())
+  }
 
+  /*def viewTournament = Action.async { implicit request =>
+    for {events <- tournamentDAO.all} yield Ok(views.html.indexRecords(events))
+  }*/
 }

@@ -18,7 +18,7 @@ class RecordsController @Inject()(eventDAO: EventDAO)
     for {
       events <- eventDAO.all
     } yield
-      Ok(views.html.indexRecords(events))
+      Ok(views.html.index_records(events))
   }
 
 }
