@@ -12,16 +12,16 @@ create table "tournament" (
 create table "category" (
 	"id" 	          BIGSERIAL NOT NULL PRIMARY KEY,
 	"title"	        VARCHAR(256),
-	"tournamentId"	BIGINT,
+	"tournament_id"	BIGINT,
   "time_limit"    BIGINT,
-  "formatId"      BIGINT
+  "format_id"      BIGINT
   );
 
 create table "event" (
 	"id" 	        BIGSERIAL NOT NULL PRIMARY KEY,
   "start_date"	TIMESTAMP,
   "round"       BIGINT,
-  "categoryId"  BIGINT
+  "category_id"  BIGINT
   );
 
 create table "participant" (
@@ -36,14 +36,14 @@ create table "participant" (
 
 create table "eventParticipant" (
 	"id" 	          BIGSERIAL NOT NULL PRIMARY KEY,
-	"eventId"	      BIGINT,
-  "participantId" BIGINT
+	"event_id"	      BIGINT,
+  "participant_id" BIGINT
  );
 
 create table "result" (
 	"id" 	          BIGSERIAL NOT NULL PRIMARY KEY,
-	"participantId"	BIGINT,
-	"eventId"	      BIGINT,
+	"participant_id"	BIGINT,
+	"event_id"	      BIGINT,
   "time"          DECIMAL(10,6)
   );
 
