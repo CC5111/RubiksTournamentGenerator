@@ -1,5 +1,6 @@
 @(form: Form[models.entities.Tournament])(implicit msg: play.api.i18n.Messages)
 
+
 @main("Create a new tournament"){
 
     <!-- Page Header -->
@@ -12,36 +13,27 @@
     </div>
         <!-- /.row -->
 
-    @helper.form(action = routes.RubiksController.addTournament){
-        <input type="hidden" value="0" name="id" />
-        @helper.inputText(form("place"))
-        @helper.input(form("organizer_id")) { (id, name, value, args) =>
-            <input type="text" name="@name" id="@id" @toHtmlArgs(args)>
-        }
-        <button type="submit" class="btn btn-primary">Crear!</button>
-    }
+
 
     <div class="row">
         <div class="col-md-offset-2 col-md-6 ">
-            <form class="form-horizontal" action="#">
-                <div class="form-group">
-                    <label class="col-md-3 control-label">Name</label>
-                    <div class="col-md-6">
-                        <input type="text" name="torunament_name" placeholder="Name" class="form-control input-md">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-3 control-label">Fecha de inicio</label>
-                    <div class="col-md-6">
-                        <input type="text" name="start_date" class="form-control input-md">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-4 col-md-4">
-                        <button type="submit" class="btn btn-success">Crear</button>
-                    </div>
-                </div>
-            </form>
+            @if(form.hasGlobalErrors) {
+                <ul>
+                @for(error <- form.globalErrors) {
+                    <li>@Messages(error.messages, error.args)</li>
+                }
+                </ul>
+            }
+        @helper.form(action = routes.RubiksController.createTournament){
+            <input type="hidden" value="0" name="id" />
+            @helper.inputText(form("place"), 'class -> "form-control input-md", '_label -> "Lugar", '_showErrors -> false)
+            @helper.inputText(form("organizer_id"), 'class -> "form-control input-md", '_label -> "Organizador", '_showErrors -> false)
+            @helper.inputText(form("delegated_id"), 'class -> "form-control input-md", '_label -> "Delegado", '_showErrors -> false)
+            @helper.inputDate(form("start_date"), 'class -> "form-control input-md", '_label -> "Fecha de Inicio", '_showErrors -> false)
+            @helper.inputDate(form("end_date"), 'class -> "form-control input-md", '_label -> "Fecha de Termino", '_showErrors -> false)
+
+            <button type="submit" class="btn btn-primary">Crear!</button>
+        }
         </div>
     </div>
 

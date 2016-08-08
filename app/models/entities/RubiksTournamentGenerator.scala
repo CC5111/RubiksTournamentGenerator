@@ -5,8 +5,8 @@ package models.entities
   */
 case class Tournament(id: Long,
                       place: String,
-                      organizer: Long,
-                      delegated: Long,
+                      organizer: String,
+                      delegated: String,
                       start_date: java.sql.Date,
                       end_date: java.sql.Date) extends BaseEntity
 

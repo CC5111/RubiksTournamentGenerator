@@ -2,8 +2,8 @@ package controllers
 
 import javax.inject._
 import akka.actor.ActorSystem
-import models.daos._
 import models.entities.Supplier
+import models.daos.TournamentDAO
 import models.persistence.SlickTables.SuppliersTable
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.libs.streams.ActorFlow
@@ -43,15 +43,27 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO)
     mapping(
       "id" -> longNumber,
       "place" -> nonEmptyText,
-      "organizer_id" -> longNumber,
-      "delegated_id" -> longNumber,
-      "fecha inicial" -> sqlDate,
-      "fecha final" -> sqlDate
+      "organizer_id" -> nonEmptyText,
+      "delegated_id" -> nonEmptyText,
+      "start_date" -> sqlDate,
+      "end_date" -> sqlDate
     )(Tournament.apply)(Tournament.unapply)
   )
 
-  def createTournament = Action{implicit request =>
-    Ok(views.html.tournament_creation(tournamentForm))
+  def createTournament = Action.async{ implicit request =>
+    tournamentForm.bindFromRequest.fold(
+      formWithErrors => {
+        Future{
+          println(formWithErrors)
+          BadRequest(views.html.tournament_creation(formWithErrors))
+        }
+      },
+      tournament => {
+        tournamentDAO.insert(tournament).map{id =>
+          Redirect(routes.RubiksController.index())
+        }
+      }
+    )
   }
 
   def addTournament = Action { implicit request =>

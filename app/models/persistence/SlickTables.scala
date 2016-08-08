@@ -31,8 +31,8 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
 
   class TournamentTable(tag: Tag) extends BaseTable[Tournament](tag,"tournament"){
     def place = column[String]("place")
-    def organizer = column[Long]("organizer")
-    def delegated = column[Long]("delegated")
+    def organizer = column[String]("organizer")
+    def delegated = column[String]("delegated")
     def start_date = column[java.sql.Date]("start_date")
     def end_date = column[java.sql.Date]("end_date")
 

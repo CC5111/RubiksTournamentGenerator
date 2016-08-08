@@ -3,8 +3,8 @@
 create table "tournament" (
   "id" 	 BIGSERIAL NOT NULL PRIMARY KEY,
 	"place"	      VARCHAR(256),
-	"organizer"	  BIGINT,
-	"delegated"	  BIGINT,
+	"organizer"	  VARCHAR(256),
+	"delegated"	  VARCHAR(256),
   "start_date"	DATE,
   "end_date"    DATE
   );
