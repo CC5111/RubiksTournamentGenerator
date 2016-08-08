@@ -33,8 +33,8 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
     def place = column[String]("place")
     def organizer = column[Long]("organizer")
     def delegated = column[Long]("delegated")
-    def start_date = column[java.sql.Timestamp]("start_date")
-    def end_date = column[java.sql.Timestamp]("end_date")
+    def start_date = column[java.sql.Date]("start_date")
+    def end_date = column[java.sql.Date]("end_date")
 
     def * = (id, place, organizer, delegated, start_date, end_date) <> (Tournament.tupled, Tournament.unapply _)
   }

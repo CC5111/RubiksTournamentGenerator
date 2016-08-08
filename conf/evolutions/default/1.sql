@@ -5,8 +5,8 @@ create table "tournament" (
 	"place"	      VARCHAR(256),
 	"organizer"	  BIGINT,
 	"delegated"	  BIGINT,
-  "start_date"	TIMESTAMP,
-  "end_date"    TIMESTAMP
+  "start_date"	DATE,
+  "end_date"    DATE
   );
 
 create table "category" (

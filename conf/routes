@@ -7,6 +7,7 @@ GET     /                      controllers.RubiksController.index
 GET     /tournaments            controllers.RubiksController.indexTournament
 #GET     /Tournament/modify     controllers.RubiksController.modifyTournament
 GET     /tournament/create     controllers.RubiksController.createTournament
+POST    /tournament/create     controllers.RubiksController.addTournament
 #GET     /Tournament/:name      controllers.RubiksController.showTournament(name : String)
 
 GET     /records                controllers.RecordsController.indexRecords

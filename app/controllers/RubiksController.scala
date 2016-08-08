@@ -39,10 +39,24 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO)
     Ok(views.html.tournament())
   }
 
+  val tournamentForm = Form(
+    mapping(
+      "id" -> longNumber,
+      "place" -> nonEmptyText,
+      "organizer_id" -> longNumber,
+      "delegated_id" -> longNumber,
+      "fecha inicial" -> sqlDate,
+      "fecha final" -> sqlDate
+    )(Tournament.apply)(Tournament.unapply)
+  )
+
   def createTournament = Action{implicit request =>
-    Ok(views.html.tournament_creation())
+    Ok(views.html.tournament_creation(tournamentForm))
   }
 
+  def addTournament = Action { implicit request =>
+    Ok(views.html.tournament_creation(tournamentForm))
+  }
   /*def viewTournament = Action.async { implicit request =>
     for {events <- tournamentDAO.all} yield Ok(views.html.indexRecords(events))
   }*/

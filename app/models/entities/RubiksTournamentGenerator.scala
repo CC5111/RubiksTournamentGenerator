@@ -7,8 +7,8 @@ case class Tournament(id: Long,
                       place: String,
                       organizer: Long,
                       delegated: Long,
-                      start_date: java.sql.Timestamp,
-                      end_date: java.sql.Timestamp) extends BaseEntity
+                      start_date: java.sql.Date,
+                      end_date: java.sql.Date) extends BaseEntity
 
 case class Category(id: Long,
                     title: String,
