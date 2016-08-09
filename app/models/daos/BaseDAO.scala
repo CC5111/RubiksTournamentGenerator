@@ -1,18 +1,18 @@
 package models.daos
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{Inject, Singleton}
 
-import models.entities.{Supplier, BaseEntity}
+import models.entities.{BaseEntity, Supplier}
 import models.persistence.SlickTables
-import models.persistence.SlickTables.{SuppliersTable, BaseTable}
+import models.persistence.SlickTables.{BaseTable, EventTable, SuppliersTable}
 import play.api.Play
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfig}
 import slick.backend.DatabaseConfig
 import slick.driver.JdbcProfile
-import slick.lifted.{CanBeQueryCondition}
+import slick.lifted.CanBeQueryCondition
+
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-
 import models.entities._
 
 @Singleton
@@ -45,32 +45,70 @@ class TournamentDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
 }
 
 @Singleton
-class CategoryDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider){
+class TournamentEventsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider){
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   import dbConfig.driver.api._
   import dbConfig.db
 
-  protected val tableQ = SlickTables.categoryQ
+  protected val tableQ = SlickTables.tournamentEventsQ
 
-  def all: Future[Seq[Category]] = {
+  def all: Future[Seq[TournamentEvents]] = {
     db.run(tableQ.result)
   }
 
-  def insert(category: Category): Future[Long] ={
-    db.run(tableQ returning tableQ.map(_.id) += category)
+  def insert(tournamentEvent: TournamentEvents): Future[Long] ={
+    db.run(tableQ returning tableQ.map(_.id) += tournamentEvent)
   }
 
 
-  def byId(id: Long): Future[Option[Category]] = {
+  def byId(id: Long): Future[Option[TournamentEvents]] = {
     db.run(tableQ.filter(_.id === id).result.headOption)
   }
 
-  def update(category: Category): Future[Int] = {
-    if (category.isValid)
-      db.run(tableQ.filter(_.id === category.id).update(category))
+  def update(tournamentEvent: TournamentEvents): Future[Int] = {
+    if (tournamentEvent.isValid)
+      db.run(tableQ.filter(_.id === tournamentEvent.id).update(tournamentEvent))
     else
       Future{0}
   }
+}
+
+@Singleton
+class RoundDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider){
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
+  import dbConfig.driver.api._
+  import dbConfig.db
+
+  protected val tableQ = SlickTables.roundQ
+
+  def all: Future[Seq[Round]] = {
+    db.run(tableQ.result)
+  }
+
+  def insert(event: Round): Future[Long] ={
+    db.run(tableQ returning tableQ.map(_.id) += event)
+  }
+
+  def byId(id: Long): Future[Option[Round]] = {
+    db.run(tableQ.filter(_.id === id).result.headOption)
+  }
+
+  def update(event: Round): Future[Int] = {
+    if (event.isValid)
+      db.run(tableQ.filter(_.id === event.id).update(event))
+    else
+      Future{0}
+  }
+
+  def getAllParticipant = {
+    for {
+      e <- tableQ
+      ep <- SlickTables.eventParticipantQ if e.id === ep.participantId
+      p <- SlickTables.participantQ if ep.participantId === p.id
+    } yield p
+  }
+
+
 }
 
 @Singleton
@@ -98,14 +136,6 @@ class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
       db.run(tableQ.filter(_.id === event.id).update(event))
     else
       Future{0}
-  }
-
-  def getAllParticipant = {
-    for {
-      e <- tableQ
-      ep <- SlickTables.eventParticipantQ if e.id === ep.participantId
-      p <- SlickTables.participantQ if ep.participantId === p.id
-    } yield p
   }
 
 

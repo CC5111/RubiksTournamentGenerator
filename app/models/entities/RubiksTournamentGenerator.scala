@@ -14,16 +14,16 @@ case class Tournament(id: Long,
                       start_date: java.sql.Date,
                       end_date: java.sql.Date) extends BaseEntity
 
-case class Category(id: Long,
-                    title: String,
-                    tournamentId: Long,
-                    time_limit: Int,
-                    formatId: Long) extends BaseEntity
+case class TournamentEvents(id: Long,
+                            title: String,
+                            tournamentId: Long,
+                            time_limit: Int,
+                            formatId: Long) extends BaseEntity
 
-case class Event(id: Long,
+case class Round(id: Long,
                  start_date: java.sql.Timestamp,
                  round: Int,
-                 categoryId: Long) extends BaseEntity
+                 tournamentEventId: Long) extends BaseEntity
 
 case class Participant(id: Long,
                        name: String,
@@ -43,5 +43,7 @@ case class Result(id: Long,
                   time: Int) extends BaseEntity
 
 
-
+case class Event(id: Long,
+                  name: String
+                 ) extends BaseEntity
 
