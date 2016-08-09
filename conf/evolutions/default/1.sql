@@ -3,13 +3,17 @@
 create table "tournament" (
   "id" 	 BIGSERIAL NOT NULL PRIMARY KEY,
 	"place"	      VARCHAR(256),
+	"city"        VARCHAR(256),
+	"address"     VARCHAR(256),
+	"details"     VARCHAR(256),
+	"website"     VARCHAR(256),
 	"organizer"	  VARCHAR(256),
 	"delegated"	  VARCHAR(256),
   "start_date"	DATE,
   "end_date"    DATE
   );
 
-create table "category" (
+create table "tournamentEvent" (
 	"id" 	          BIGSERIAL NOT NULL PRIMARY KEY,
 	"title"	        VARCHAR(256),
 	"tournament_id"	BIGINT,
@@ -17,11 +21,11 @@ create table "category" (
   "format_id"      BIGINT
   );
 
-create table "event" (
+create table "round" (
 	"id" 	        BIGSERIAL NOT NULL PRIMARY KEY,
   "start_date"	TIMESTAMP,
   "round"       BIGINT,
-  "category_id"  BIGINT
+  "tournamentEvent_id"  BIGINT
   );
 
 create table "participant" (
@@ -45,6 +49,12 @@ create table "result" (
 	"participant_id"	BIGINT,
 	"event_id"	      BIGINT,
   "time"          DECIMAL(10,6)
+  );
+
+
+create table "event"(
+  "id"    BIGINT NOT NULL PRIMARY KEY,
+  "name"  VARCHAR(256)
   );
 
 # --- !Downs

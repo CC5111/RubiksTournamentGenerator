@@ -31,33 +31,45 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
 
   class TournamentTable(tag: Tag) extends BaseTable[Tournament](tag,"tournament"){
     def place = column[String]("place")
+    def city = column[String]("city")
+    def address = column[String]("address")
+    def details = column[String]("details")
+    def website = column[String]("website")
     def organizer = column[String]("organizer")
     def delegated = column[String]("delegated")
     def start_date = column[java.sql.Date]("start_date")
     def end_date = column[java.sql.Date]("end_date")
 
-    def * = (id, place, organizer, delegated, start_date, end_date) <> (Tournament.tupled, Tournament.unapply _)
+    def * = (id, place, city, address, details, website, organizer, delegated, start_date, end_date) <> (Tournament.tupled, Tournament.unapply _)
   }
 
   val tournamentQ = TableQuery[TournamentTable]
 
-  class CategoryTable(tag: Tag) extends BaseTable[Category](tag,"category"){
+  class TournamentEventsTable(tag: Tag) extends BaseTable[TournamentEvents](tag,"tournamentEvent"){
     def title = column[String]("title")
     def tournament = column[Long]("tournament")
     def time_limit = column[Int]("time_limit")
     def format = column[Long]("format")
 
-    def * = (id, title, tournament, time_limit, format) <> (Category.tupled, Category.unapply _)
+    def * = (id, title, tournament, time_limit, format) <> (TournamentEvents.tupled, TournamentEvents.unapply _)
   }
 
-  val categoryQ = TableQuery[CategoryTable]
+  val tournamentEventsQ = TableQuery[TournamentEventsTable]
 
-  class EventTable(tag: Tag) extends BaseTable[Event](tag,"event"){
+  class RoundTable(tag: Tag) extends BaseTable[Round](tag,"round"){
     def start_date = column[java.sql.Timestamp]("start_date")
     def round = column[Int]("round")
     def categoryId = column[Long]("category_id")
 
-    def * = (id, start_date, round, categoryId) <> (Event.tupled, Event.unapply _)
+    def * = (id, start_date, round, categoryId) <> (Round.tupled, Round.unapply _)
+  }
+
+  val roundQ = TableQuery[RoundTable]
+
+  class EventTable(tag: Tag) extends BaseTable[Event](tag,"event"){
+    def name = column[String]("name")
+
+    def * = (id, name) <> (Event.tupled, Event.unapply _)
   }
 
   val eventQ = TableQuery[EventTable]
