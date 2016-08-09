@@ -5,6 +5,10 @@ package models.entities
   */
 case class Tournament(id: Long,
                       place: String,
+                      city: String,
+                      address: String,
+                      details: String,
+                      website: String,
                       organizer: String,
                       delegated: String,
                       start_date: java.sql.Date,

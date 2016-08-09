@@ -43,6 +43,10 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO)
     mapping(
       "id" -> longNumber,
       "place" -> nonEmptyText,
+      "city" -> nonEmptyText,
+      "address" -> nonEmptyText,
+      "details" -> nonEmptyText,
+      "website" -> nonEmptyText,
       "organizer_id" -> nonEmptyText,
       "delegated_id" -> nonEmptyText,
       "start_date" -> sqlDate,

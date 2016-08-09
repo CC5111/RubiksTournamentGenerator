@@ -3,6 +3,10 @@
 create table "tournament" (
   "id" 	 BIGSERIAL NOT NULL PRIMARY KEY,
 	"place"	      VARCHAR(256),
+	"city"        VARCHAR(256),
+	"address"     VARCHAR(256),
+	"details"     VARCHAR(256),
+	"website"     VARCHAR(256),
 	"organizer"	  VARCHAR(256),
 	"delegated"	  VARCHAR(256),
   "start_date"	DATE,
