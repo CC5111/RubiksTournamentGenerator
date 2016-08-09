@@ -57,11 +57,32 @@ create table "event"(
   "name"  VARCHAR(256)
   );
 
+INSERT INTO "event" ("id","name") VALUES (1,'3x3');
+INSERT INTO "event" ("id","name") VALUES (2,'2x2');
+INSERT INTO "event" ("id","name") VALUES (3,'4x4');
+INSERT INTO "event" ("id","name") VALUES (4,'5x5');
+INSERT INTO "event" ("id","name") VALUES (5,'3x3 Blindfolded');
+INSERT INTO "event" ("id","name") VALUES (6,'3x3 One-Hand');
+INSERT INTO "event" ("id","name") VALUES (7,'3x3 Fewest Move');
+INSERT INTO "event" ("id","name") VALUES (8,'3x3 With Feet');
+INSERT INTO "event" ("id","name") VALUES (9,'Megaminx');
+INSERT INTO "event" ("id","name") VALUES (10,'Pyraminx');
+INSERT INTO "event" ("id","name") VALUES (11,'Square-1');
+INSERT INTO "event" ("id","name") VALUES (12,'Clock');
+INSERT INTO "event" ("id","name") VALUES (13,'Skewb');
+INSERT INTO "event" ("id","name") VALUES (14,'6x6'));
+INSERT INTO "event" ("id","name") VALUES (15,'7x7');
+INSERT INTO "event" ("id","name") VALUES (16,'4x4 Blindfolded');
+INSERT INTO "event" ("id","name") VALUES (17,'5x5 Blindfolded');
+INSERT INTO "event" ("id","name") VALUES (18,'3x3 Multi-Blindfolded'');
+
+
 # --- !Downs
 ;
 drop table "tournament";
-drop table "category";
+drop table "tournamentEvent";
 drop table "event";
+drop table "round";
 drop table "participant";
 drop table "eventParticipant";
 drop table "result";
