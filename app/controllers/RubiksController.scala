@@ -118,6 +118,20 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO)
   }
 
 
+  def createTournamentEvent(tournamentId: Long) = Action.async{implicit request =>
+    tournamentEventForm.bindFromRequest.fold(
+      formWithErrors => {
+        Future{
+          println(formWithErrors)
+          BadRequest(views.html.tournament_events(tournamentId, formWithErrors))
+        }
+      },
+      events => {
+        Future{
+          Ok(views.html.index())
+        }
+      }
+    )
 
-
+  }
 }

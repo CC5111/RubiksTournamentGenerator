@@ -22,26 +22,46 @@
                 </ul>
             }
 
-            @helper.form(action = routes.RubiksController.createTournament, 'class-> "form-inline") {
+            <div class="row">
+                <div class="col-md-1">
+                    Seleccionar
+                </div>
+                <div class="col-md-1">
+                    Evento
+                </div>
+                <div class="col-md-3">
+                    Tiempo limite(minutos)
+                </div>
+                <div class="col-md-3">
+                    Número de rondas
+                </div>
+            </div>
+
+            @helper.form(action = routes.RubiksController.createTournamentEvent(tournamentId), 'class-> "form-inline") {
                 @helper.repeat(form("events"), min = 1) { events =>
                     <div class="row">
                         <div class="col-md-1">
                             @helper.checkbox(events("checked"), '_label->"")
                         </div>
-                        <div class="col-md-3">
-                            @helper.inputText(events("name"), 'disabled->"disabled", '_label -> "Categoría")
+                        <div class="col-md-1">
+                            @helper.input(events("name"), '_label->"") { (id, name, value, args) =>
+                                <label>@value</label>
+                                <input type="hidden" value="@value" name="@name">
+                            }
                         </div>
                         <div class="col-md-3">
-                            @helper.inputText(events("limit_time"), '_label->"Tiempo limite(minutos)")
+                            @helper.inputText(events("limit_time"), '_label->"")
                         </div>
                         <div class="col-md-3">
-                            @helper.inputText(events("rounds"), '_label->"Número de rondas")
+                            @helper.inputText(events("rounds"), '_label->"")
+                        </div>
+                        <div class="col-md-1">
+                            @helper.input(events("id"), '_label->"") { (id, name, value, args) =>
+                                <input type="hidden" value="@value" name="@name">
+                            }
                         </div>
                     </div>
                 }
-
-
-
 
                 <button type="submit" class="btn btn-primary">Crear!</button>
             }
