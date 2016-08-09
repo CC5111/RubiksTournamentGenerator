@@ -42,6 +42,10 @@ class TournamentDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
     else
       Future{0}
   }
+
+  def exists(id : Long) : Future[Boolean] =
+    db.run(tableQ.filter(i => i.id === id).exists.result)
+
 }
 
 @Singleton

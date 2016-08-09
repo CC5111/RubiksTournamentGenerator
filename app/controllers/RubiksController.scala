@@ -39,6 +39,10 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO)
     Ok(views.html.tournament())
   }
 
+  def addTournament = Action { implicit request =>
+    Ok(views.html.tournament_creation(tournamentForm))
+  }
+
   val tournamentForm = Form(
     mapping(
       "id" -> longNumber,
@@ -54,22 +58,30 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO)
     tournamentForm.bindFromRequest.fold(
       formWithErrors => {
         Future{
-          println(formWithErrors)
           BadRequest(views.html.tournament_creation(formWithErrors))
         }
       },
       tournament => {
         tournamentDAO.insert(tournament).map{id =>
-          Redirect(routes.RubiksController.index())
+          Redirect(routes.RubiksController.addTournamentEvent(id))
         }
       }
     )
   }
 
-  def addTournament = Action { implicit request =>
-    Ok(views.html.tournament_creation(tournamentForm))
-  }
   /*def viewTournament = Action.async { implicit request =>
     for {events <- tournamentDAO.all} yield Ok(views.html.indexRecords(events))
   }*/
+
+  def addTournamentEvent(id: Long) = Action.async{ implicit request =>
+    tournamentDAO.exists(id).map(s =>
+    if (s)
+      Ok(views.html.tournament_events(id))
+    else
+      Redirect(routes.RubiksController.index())
+    )
+  }
+
+
+
 }
