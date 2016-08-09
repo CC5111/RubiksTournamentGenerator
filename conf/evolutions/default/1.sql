@@ -70,11 +70,11 @@ INSERT INTO "event" ("id","name") VALUES (10,'Pyraminx');
 INSERT INTO "event" ("id","name") VALUES (11,'Square-1');
 INSERT INTO "event" ("id","name") VALUES (12,'Clock');
 INSERT INTO "event" ("id","name") VALUES (13,'Skewb');
-INSERT INTO "event" ("id","name") VALUES (14,'6x6'));
+INSERT INTO "event" ("id","name") VALUES (14,'6x6');
 INSERT INTO "event" ("id","name") VALUES (15,'7x7');
 INSERT INTO "event" ("id","name") VALUES (16,'4x4 Blindfolded');
 INSERT INTO "event" ("id","name") VALUES (17,'5x5 Blindfolded');
-INSERT INTO "event" ("id","name") VALUES (18,'3x3 Multi-Blindfolded'');
+INSERT INTO "event" ("id","name") VALUES (18,'3x3 Multi-Blindfolded');
 
 
 # --- !Downs
