@@ -41,11 +41,12 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
                                 (implicit ec: ExecutionContext, system: ActorSystem, mat: akka.stream.Materializer) extends Controller {
 
   def index = Action{implicit request =>
+
     Ok(views.html.index())
   }
 
   def indexTournament = Action{implicit request =>
-    Ok(views.html.tournament())
+      Ok(views.html.tournament())
   }
 
   def addTournament = Action { implicit request =>
@@ -85,9 +86,6 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
   /*def viewTournament = Action.async { implicit request =>
     for {events <- tournamentDAO.all} yield Ok(views.html.indexRecords(events))
   }*/
-
-
-
 
   val tournamentEventForm = Form(
     mapping(
@@ -134,10 +132,14 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
         }
       },
       events => {
-        for{
-          form <- events.events
-          if (form.checked)
-        }yield tournamentEventsDAO.insert(TournamentEvents(0, form.name, tournamentId, form.limit_time, 1, form.rounds)).map{id => println(id)}
+        val tournament_event = for{
+          form <- events.events if (form.checked)
+        } yield TournamentEvents(0, form.name, tournamentId, form.limit_time, 1, form.rounds)
+
+        tournament_event.map{ form =>
+          tournamentEventsDAO.insert(form)
+        }
+
         Future{
           Ok(views.html.index())
         }

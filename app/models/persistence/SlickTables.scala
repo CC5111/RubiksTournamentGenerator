@@ -47,12 +47,12 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
 
   class TournamentEventsTable(tag: Tag) extends BaseTable[TournamentEvents](tag,"tournamentEvent"){
     def title = column[String]("title")
-    def tournament = column[Long]("tournament")
+    def tournamentId = column[Long]("tournament_id")
     def time_limit = column[Int]("time_limit")
-    def format = column[Long]("format")
+    def formatId = column[Long]("format_id")
     def rounds = column[Int]("rounds")
 
-    def * = (id, title, tournament, time_limit, format, rounds) <> (TournamentEvents.tupled, TournamentEvents.unapply _)
+    def * = (id, title, tournamentId, time_limit, formatId, rounds) <> (TournamentEvents.tupled, TournamentEvents.unapply _)
   }
 
   val tournamentEventsQ = TableQuery[TournamentEventsTable]
