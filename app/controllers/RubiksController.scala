@@ -4,7 +4,7 @@ import javax.inject._
 import akka.actor.ActorSystem
 import akka.actor.FSM.->
 import models.entities.Supplier
-import models.daos.TournamentDAO
+import models.daos.{EventDAO, TournamentDAO}
 import models.persistence.SlickTables.SuppliersTable
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.libs.streams.ActorFlow
@@ -29,14 +29,15 @@ import play.api.Play.current
   */
 
 
-case class tournamentsEventF(id: Long,
+case class TournamentsEventF(id: Long,
                              checked: Boolean,
                              name: String,
                              limit_time: Int,
                              rounds: Int)
+case class Tournaments(events: Seq[TournamentsEventF])
 
 @Singleton
-class RubiksController @Inject()(tournamentDAO: TournamentDAO)
+class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDAO)
                                 (implicit ec: ExecutionContext, system: ActorSystem, mat: akka.stream.Materializer) extends Controller {
 
   def index = Action{implicit request =>
@@ -89,7 +90,7 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO)
 
 
   val tournamentEventForm = Form(
-    single(
+    mapping(
       "events" -> seq(
         mapping(
           "id" -> longNumber,
@@ -98,22 +99,29 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO)
           "limit_time" -> number,
           "rounds" -> number
 
-        )(tournamentsEventF.apply)(tournamentsEventF.unapply)
+        )(TournamentsEventF.apply)(TournamentsEventF.unapply)
       )
-    )
+    )(Tournaments.apply)(Tournaments.unapply)
   )
 
 
   def addTournamentEvent(tournamentId: Long) = Action.async{ implicit request =>
-    tournamentDAO.exists(tournamentId).map(s =>
-      if (s) {
-          val existingEvents = List(tournamentsEventF(1, false, "3x3", 0, 0),
-                                    tournamentsEventF(2, false, "2x2", 0, 0))
 
-          Ok(views.html.tournament_events(tournamentId, tournamentEventForm.fill(existingEvents)))
+    tournamentDAO.exists(tournamentId).flatMap(s =>
+      if (s) {
+         eventDAO.allNames.map { case names =>
+
+
+          val existingEvents = for {
+            name <- names
+          } yield TournamentsEventF(1, false, name, 0, 0)
+
+          Ok(views.html.tournament_events(tournamentId, tournamentEventForm.fill(Tournaments(existingEvents))))
+         //Redirect(routes.RubiksController.index())
+        }
       }
       else
-        Redirect(routes.RubiksController.index())
+        Future{ Redirect(routes.RubiksController.index())}
     )
   }
 

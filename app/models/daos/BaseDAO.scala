@@ -142,6 +142,10 @@ class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
       Future{0}
   }
 
+  def allNames: Future[Seq[String]] = {
+    db.run(tableQ.map(_.name).result)
+  }
+
 
 }
 
