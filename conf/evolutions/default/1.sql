@@ -18,7 +18,8 @@ create table "tournamentEvent" (
 	"title"	        VARCHAR(256),
 	"tournament_id"	BIGINT,
   "time_limit"    BIGINT,
-  "format_id"      BIGINT
+  "format_id"     BIGINT,
+	"rounds"      	BIGINT
   );
 
 create table "round" (

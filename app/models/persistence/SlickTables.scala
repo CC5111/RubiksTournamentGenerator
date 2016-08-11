@@ -50,8 +50,9 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
     def tournament = column[Long]("tournament")
     def time_limit = column[Int]("time_limit")
     def format = column[Long]("format")
+    def rounds = column[Int]("rounds")
 
-    def * = (id, title, tournament, time_limit, format) <> (TournamentEvents.tupled, TournamentEvents.unapply _)
+    def * = (id, title, tournament, time_limit, format, rounds) <> (TournamentEvents.tupled, TournamentEvents.unapply _)
   }
 
   val tournamentEventsQ = TableQuery[TournamentEventsTable]

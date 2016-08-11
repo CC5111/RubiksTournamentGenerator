@@ -18,7 +18,8 @@ case class TournamentEvents(id: Long,
                             title: String,
                             tournamentId: Long,
                             time_limit: Int,
-                            formatId: Long) extends BaseEntity
+                            formatId: Long,
+                            rounds: Int) extends BaseEntity
 
 case class Round(id: Long,
                  start_date: java.sql.Timestamp,

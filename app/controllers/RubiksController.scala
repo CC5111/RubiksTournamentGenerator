@@ -4,7 +4,7 @@ import javax.inject._
 import akka.actor.ActorSystem
 import akka.actor.FSM.->
 import models.entities.Supplier
-import models.daos.{EventDAO, TournamentDAO}
+import models.daos.{EventDAO, TournamentDAO, TournamentEventsDAO}
 import models.persistence.SlickTables.SuppliersTable
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.libs.streams.ActorFlow
@@ -34,10 +34,10 @@ case class TournamentsEventF(id: Long,
                              name: String,
                              limit_time: Int,
                              rounds: Int)
-case class Tournaments(events: Seq[TournamentsEventF])
+case class NewEvents(events: Seq[TournamentsEventF])
 
 @Singleton
-class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDAO)
+class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDAO, tournamentEventsDAO: TournamentEventsDAO)
                                 (implicit ec: ExecutionContext, system: ActorSystem, mat: akka.stream.Materializer) extends Controller {
 
   def index = Action{implicit request =>
@@ -101,7 +101,7 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
 
         )(TournamentsEventF.apply)(TournamentsEventF.unapply)
       )
-    )(Tournaments.apply)(Tournaments.unapply)
+    )(NewEvents.apply)(NewEvents.unapply)
   )
 
 
@@ -116,8 +116,7 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
             name <- names
           } yield TournamentsEventF(1, false, name, 0, 0)
 
-          Ok(views.html.tournament_events(tournamentId, tournamentEventForm.fill(Tournaments(existingEvents))))
-         //Redirect(routes.RubiksController.index())
+          Ok(views.html.tournament_events(tournamentId, tournamentEventForm.fill(NewEvents(existingEvents))))
         }
       }
       else
@@ -135,6 +134,10 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
         }
       },
       events => {
+        for{
+          form <- events.events
+          if (form.checked)
+        }yield tournamentEventsDAO.insert(TournamentEvents(0, form.name, tournamentId, form.limit_time, 1, form.rounds)).map{id => println(id)}
         Future{
           Ok(views.html.index())
         }
