@@ -56,6 +56,7 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
   val tournamentForm = Form(
     mapping(
       "id" -> longNumber,
+      "name" -> nonEmptyText,
       "place" -> nonEmptyText,
       "city" -> nonEmptyText,
       "address" -> nonEmptyText,
@@ -146,5 +147,10 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
       }
     )
 
+  }
+
+  def seeTournaments() = Action.async{implicit request =>
+    tournamentDAO.all.map{ tournaments =>
+    Ok(views.html.tournament_see(tournaments.toList))}
   }
 }

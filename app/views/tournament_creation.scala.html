@@ -26,6 +26,7 @@
             }
         @helper.form(action = routes.RubiksController.createTournament){
             <input type="hidden" value="0" name="id" />
+            @helper.inputText(form("name"), 'class -> "form-control input-md", '_label -> "Nombre", '_help -> "")
             @helper.inputText(form("place"), 'class -> "form-control input-md", '_label -> "Lugar", '_help -> "")
             @helper.inputText(form("city"), 'class -> "form-control input-md", '_label -> "Ciudad", '_help -> "")
             @helper.inputText(form("address"), 'class -> "form-control input-md", '_label -> "Dirección", '_help -> "")

@@ -2,6 +2,7 @@
 
 create table "tournament" (
   "id" 	 BIGSERIAL NOT NULL PRIMARY KEY,
+  "name"        VARCHAR(256),
 	"place"	      VARCHAR(256),
 	"city"        VARCHAR(256),
 	"address"     VARCHAR(256),

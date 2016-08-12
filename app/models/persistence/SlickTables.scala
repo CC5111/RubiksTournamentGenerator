@@ -30,6 +30,7 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
   val suppliersTableQ : TableQuery[SuppliersTable] = TableQuery[SuppliersTable]
 
   class TournamentTable(tag: Tag) extends BaseTable[Tournament](tag,"tournament"){
+    def name = column[String]("name")
     def place = column[String]("place")
     def city = column[String]("city")
     def address = column[String]("address")
@@ -40,7 +41,7 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
     def start_date = column[java.sql.Date]("start_date")
     def end_date = column[java.sql.Date]("end_date")
 
-    def * = (id, place, city, address, details, website, organizer, delegated, start_date, end_date) <> (Tournament.tupled, Tournament.unapply _)
+    def * = (id, name, place, city, address, details, website, organizer, delegated, start_date, end_date) <> (Tournament.tupled, Tournament.unapply _)
   }
 
   val tournamentQ = TableQuery[TournamentTable]

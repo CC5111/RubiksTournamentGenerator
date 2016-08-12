@@ -4,6 +4,7 @@ package models.entities
   * Created by milenkotomic on 28-07-16.
   */
 case class Tournament(id: Long,
+                      name: String,
                       place: String,
                       city: String,
                       address: String,

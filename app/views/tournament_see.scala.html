@@ -1,0 +1,49 @@
+@(tournaments: List[models.entities.Tournament])(implicit msg: play.api.i18n.Messages)
+
+@main("Tournaments") {
+
+
+  <h1>Torneos</h1>
+
+  <div class="row">
+    @for(tournament <- tournaments) {
+      <div class="panel panel-default col-md-4">
+          <!-- Default panel contents -->
+        <div class="panel-heading">@tournament.name</div>
+        <div class="panel-body">
+          <p>@tournament.details</p>
+        </div>
+
+          <!-- List group -->
+        <ul class="list-group">
+          <li class="list-group-item">@tournament.place</li>
+          <li class="list-group-item">@tournament.city</li>
+          <li class="list-group-item">@tournament.address</li>
+          <li class="list-group-item">@tournament.start_date</li>
+          <li class="list-group-item">@tournament.end_date</li>
+        </ul>
+      </div>
+    }
+    @for(tournament <- tournaments) {
+      <div class="panel panel-default col-md-4">
+          <!-- Default panel contents -->
+        <div class="panel-heading">@tournament.name</div>
+        <div class="panel-body">
+          <p>@tournament.details</p>
+        </div>
+
+          <!-- List group -->
+        <ul class="list-group">
+          <li class="list-group-item">@tournament.place</li>
+          <li class="list-group-item">@tournament.city</li>
+          <li class="list-group-item">@tournament.address</li>
+          <li class="list-group-item">@tournament.start_date</li>
+          <li class="list-group-item">@tournament.end_date</li>
+        </ul>
+      </div>
+    }
+  </div>
+
+  </table>
+
+}
