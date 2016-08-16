@@ -29,10 +29,10 @@ case class Round(id: Long,
 
 case class Participant(id: Long,
                        name: String,
-                       rut: Long,
                        email: String,
                        WCAID: String,
                        gender: String,
+                       tournamentId: Long,
                        birth_date: java.sql.Date) extends BaseEntity
 
 case class EventParticipant(id: Long,

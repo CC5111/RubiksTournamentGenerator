@@ -1,26 +1,25 @@
 package controllers
 
 import javax.inject._
+
 import akka.actor.ActorSystem
 import akka.actor.FSM.->
 import models.entities.Supplier
-import models.daos.{EventDAO, TournamentDAO, TournamentEventsDAO}
+import models.daos._
 import models.persistence.SlickTables.SuppliersTable
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
-import scala.concurrent.{Future, ExecutionContext}
 
+import scala.concurrent.{ExecutionContext, Future}
 import models.entities._
-
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
-import scala.concurrent.{Future, ExecutionContext}
+
+import scala.concurrent.{ExecutionContext, Future}
 import play.api.data._
 import play.api.data.Forms._
-
-
 import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
 
@@ -36,8 +35,14 @@ case class TournamentsEventF(id: Long,
                              rounds: Int)
 case class NewEvents(events: Seq[TournamentsEventF])
 
+case class ParticipantEventF(id: Long,
+                             checked: Boolean,
+                             name: String,
+                             eventId: Long)
+case class NewParticipantEvents(events: Seq[ParticipantEventF])
+
 @Singleton
-class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDAO, tournamentEventsDAO: TournamentEventsDAO)
+class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDAO, tournamentEventsDAO: TournamentEventsDAO, participantDAO: ParticipantDAO, eventParticipantDAO: EventParticipantDAO)
                                 (implicit ec: ExecutionContext, system: ActorSystem, mat: akka.stream.Materializer) extends Controller {
 
   def index = Action{implicit request =>
@@ -173,6 +178,113 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
         } yield event
 
         Ok(views.html.tournament_events(tournamentEvents.toList,tournamentId))
+
+    }
+
+  }
+
+  val participantForm = Form(
+    mapping(
+      "id" -> longNumber,
+      "name" -> nonEmptyText,
+      "email" -> nonEmptyText,
+      "WCAID" -> nonEmptyText,
+      "gender" -> nonEmptyText,
+      "tournament_id" -> longNumber,
+      "birth_date" -> sqlDate
+    )(Participant.apply)(Participant.unapply)
+  )
+
+  /* POST */
+  def tournamentCreateParticipant(tournamentId: Long) = Action.async{implicit request =>
+    participantForm.bindFromRequest.fold(
+      formWithErrors => {
+        Future{
+          BadRequest(views.html.tournament_addparticipant(formWithErrors, tournamentId))
+        }
+      },
+      participant => {
+        participantDAO.insert(participant).map{id =>
+          Redirect(routes.RubiksController.addParticipantEvent(tournamentId, id))
+        }
+      }
+    )
+  }
+
+  /*GET*/
+  def tournamentAddParticipant(tournamentId: Long) = Action{implicit request =>
+    Ok(views.html.tournament_addparticipant(participantForm, tournamentId))
+  }
+
+  val participantEventForm = Form(
+    mapping(
+      "events" -> seq(
+        mapping(
+          "id" -> longNumber,
+          "checked" -> boolean,
+          "name" -> nonEmptyText,
+          "event_id" -> longNumber
+        )(ParticipantEventF.apply)(ParticipantEventF.unapply)
+      )
+    )(NewParticipantEvents.apply)(NewParticipantEvents.unapply)
+  )
+
+  def addParticipantEvent(tournamentId: Long, participantId: Long) = Action.async{ implicit request =>
+
+    participantDAO.exists(participantId).flatMap(s =>
+      if (s) {
+        tournamentEventsDAO.all.map { case tevents =>
+
+
+          val existingEvents = for {
+            event <- tevents if (event.tournamentId == tournamentId)
+          } yield ParticipantEventF(1, false, event.title, event.id)
+
+          Ok(views.html.tournament_participantevents(participantEventForm.fill(NewParticipantEvents(existingEvents)),tournamentId,participantId))
+        }
+      }
+      else
+        Future{ Redirect(routes.RubiksController.index())}
+    )
+  }
+
+
+  def createParticipantEvent(tournamentId: Long, participantId: Long) = Action.async{implicit request =>
+    participantEventForm.bindFromRequest.fold(
+      formWithErrors => {
+        Future{
+          println(formWithErrors)
+          BadRequest(views.html.tournament_participantevents(formWithErrors, tournamentId,participantId))
+        }
+      },
+      events => {
+        val participant_event = for{
+          form <- events.events if (form.checked)
+        } yield EventParticipant(0, form.eventId, participantId)
+        println(participant_event)
+
+        participant_event.map{ form =>
+          eventParticipantDAO.insert(form)
+        }
+
+        Future{
+          Redirect(routes.RubiksController.tournamentParticipants(tournamentId))
+        }
+      }
+    )
+
+  }
+
+
+  def tournamentParticipants(tournamentId: Long) = Action.async{implicit request =>
+
+    participantDAO.all.map{
+      case participants =>
+        val tournamentParticipants = for{
+          participant <- participants if (participant.tournamentId == tournamentId)
+        } yield participant
+
+        Ok(views.html.tournament_participants(tournamentParticipants.toList,tournamentId))
 
     }
 

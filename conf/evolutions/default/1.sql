@@ -33,10 +33,10 @@ create table "round" (
 create table "participant" (
 	"id" 	       BIGSERIAL NOT NULL PRIMARY KEY,
 	"name"	     VARCHAR(256),
-	"rut"	       BIGINT,
 	"email"	     VARCHAR(256),
 	"WCAID"	     VARCHAR(256),
 	"gender"	   VARCHAR(256),
+	"tournament_id"	BIGINT,
   "birth_date" TIMESTAMP
   );
 

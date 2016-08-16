@@ -78,18 +78,18 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
 
   class ParticipantTable(tag: Tag) extends BaseTable[Participant](tag,"participant"){
     def name = column[String]("name")
-    def rut = column[Long]("rut")
     def email = column[String]("email")
     def WCAID = column[String]("WCAID")
     def gender = column[String]("gender")
+    def tournamentId = column[Long]("tournament_id")
     def birth_date = column[java.sql.Date]("birth_date")
 
-    def * = (id, name, rut, email, WCAID, gender, birth_date) <> (Participant.tupled, Participant.unapply _)
+    def * = (id, name, email, WCAID, gender, tournamentId, birth_date) <> (Participant.tupled, Participant.unapply _)
   }
 
   val participantQ = TableQuery[ParticipantTable]
 
-  class EventParticipantTable(tag: Tag) extends BaseTable[EventParticipant](tag, "event_participant"){
+  class EventParticipantTable(tag: Tag) extends BaseTable[EventParticipant](tag, "eventParticipant"){
     def eventId = column[Long]("event_id")
     def participantId = column[Long]("participant_id")
 

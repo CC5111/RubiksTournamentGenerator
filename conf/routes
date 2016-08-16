@@ -15,7 +15,14 @@ GET     /tournament/create/addEvent     controllers.RubiksController.addTourname
 
 GET     /tournament/index               controllers.RubiksController.tournamentIndex(tournamentId: Long)
 GET     /tournament/events              controllers.RubiksController.tournamentEvents(tournamentId: Long)
-#GET     /Tournament/:name      controllers.RubiksController.showTournament(name : String)
+
+POST    /tournament/addParticipant      controllers.RubiksController.tournamentCreateParticipant(tournamentId: Long)
+GET     /tournament/addParticipant      controllers.RubiksController.tournamentAddParticipant(tournamentId: Long)
+
+POST    /tournament/addParticipant/events   controllers.RubiksController.createParticipantEvent(tournamentId: Long, participantId: Long)
+GET     /tournament/addParticipant/events   controllers.RubiksController.addParticipantEvent(tournamentId: Long, participantId: Long)
+
+GET     /tournament/participants        controllers.RubiksController.tournamentParticipants(tournamentId: Long)
 
 GET     /records                controllers.RecordsController.indexRecords
 

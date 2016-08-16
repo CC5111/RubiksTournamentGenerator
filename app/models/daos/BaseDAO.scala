@@ -177,6 +177,9 @@ class ParticipantDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPro
       Future{0}
   }
 
+  def exists(id : Long) : Future[Boolean] =
+    db.run(tableQ.filter(i => i.id === id).exists.result)
+
 
 }
 
