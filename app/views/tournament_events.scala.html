@@ -1,71 +1,46 @@
-@(tournamentId: Long, form: Form[NewEvents])(implicit msg: play.api.i18n.Messages)
+@(tournamentEvents: List[models.entities.TournamentEvents], tournamentId: Long)(implicit msg: play.api.i18n.Messages)
+
+@tournament_main("Eventos",tournamentId){
 
 
-@main("Create a new tournament"){
-    <!-- Page Header -->
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">
-                Agregar eventos - @tournamentId
-            </h1>
-        </div>
+  <!-- Page Header -->
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">
+      Eventos
+      </h1>
     </div>
-        <!-- /.row -->
+  </div>
+    <!-- /.row -->
 
-    <div class="row">
-        <div class="col-md-offset-2 col-md-10 ">
-            @if(form.hasGlobalErrors) {
-                <ul>
-                @for(error <- form.globalErrors) {
-                    <li>@Messages(error.messages, error.args)</li>
-                }
-                </ul>
-            }
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Evento</th>
+        <th>Tiempo Límite</th>
+        <th>Formato</th>
+        <th>Rondas</th>
+      </tr>
+    </thead>
+    <tbody>
+     @for(event <- tournamentEvents){
+       <tr>
+         <td>@event.title</td>
+         <td>@event.time_limit</td>
+         <td>@event.formatId</td>
+         <td>@event.rounds<td>
+       </tr>
+     }
+    </tbody>
+  </table>
 
-            <div class="row">
-                <div class="col-md-1">
-                    Seleccionar
-                </div>
-                <div class="col-md-3">
-                    Evento
-                </div>
-                <div class="col-md-3">
-                    Tiempo limite(minutos)
-                </div>
-                <div class="col-md-3">
-                    Número de rondas
-                </div>
-            </div>
 
-            @helper.form(action = routes.RubiksController.createTournamentEvent(tournamentId), 'class-> "form-inline") {
-                @helper.repeat(form("events"), min = 1) { events =>
-                    <div class="row">
-                        <div class="col-md-1">
-                            @helper.checkbox(events("checked"), '_label->"")
-                        </div>
-                        <div class="col-md-3">
-                            @helper.input(events("name"), '_label->"") { (id, name, value, args) =>
-                                <label>@value</label>
-                                <input type="hidden" value="@value" name="@name">
-                            }
-                        </div>
-                        <div class="col-md-3">
-                            @helper.inputText(events("limit_time"), '_label->"")
-                        </div>
-                        <div class="col-md-3">
-                            @helper.inputText(events("rounds"), '_label->"")
-                        </div>
-                        <div class="col-md-1">
-                            @helper.input(events("id"), '_label->"") { (id, name, value, args) =>
-                                <input type="hidden" value="@value" name="@name">
-                            }
-                        </div>
-                    </div>
-                }
 
-                <button type="submit" class="btn btn-primary">Crear!</button>
-            }
-        </div>
-    </div>
+  </div>
+
+
+
+
+
+
 }
-

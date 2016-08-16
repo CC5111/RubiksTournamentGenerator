@@ -10,9 +10,11 @@ POST    /tournament/create              controllers.RubiksController.createTourn
 GET     /tournament/create              controllers.RubiksController.addTournament
 GET     /tournament/see                 controllers.RubiksController.seeTournaments
 
-POST     /tournament/create/addEvent     controllers.RubiksController.createTournamentEvent(tournamentId: Long)
+POST    /tournament/create/addEvent     controllers.RubiksController.createTournamentEvent(tournamentId: Long)
 GET     /tournament/create/addEvent     controllers.RubiksController.addTournamentEvent(tournamentId: Long)
 
+GET     /tournament/index               controllers.RubiksController.tournamentIndex(tournamentId: Long)
+GET     /tournament/events              controllers.RubiksController.tournamentEvents(tournamentId: Long)
 #GET     /Tournament/:name      controllers.RubiksController.showTournament(name : String)
 
 GET     /records                controllers.RecordsController.indexRecords

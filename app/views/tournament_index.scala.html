@@ -1,0 +1,83 @@
+@(tournament: models.entities.Tournament)(implicit msg: play.api.i18n.Messages)
+
+@tournament_main(tournament.name,tournament.id){
+
+
+  <!-- Page Header -->
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">
+        @tournament.name
+      </h1>
+    </div>
+  </div>
+    <!-- /.row -->
+
+  <div class="row">
+    <div class="col-lg-12">
+      <b>Del:</b> @tournament.start_date
+    </div>
+    <div class="col-lg-12">
+      <b>Al:</b> @tournament.end_date
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+    <b>Lugar:</b>
+    </div>
+    <div class="col-lg-12">
+    @tournament.place
+    </div>
+    <div class="col-lg-12">
+    @tournament.address
+    </div>
+    <div class="col-lg-12">
+    @tournament.city
+    </div>
+
+  </div>
+
+  <div class="row space-top">
+    <div class="col-lg-12">
+      <b>Sitio Web: </b>
+    </div>
+    <div class="col-lg-12">
+    <a href="@tournament.website">@tournament.website</a>
+    </div>
+  </div>
+
+  <div class="row space-top">
+    <div class="col-lg-12">
+      <b>Organizador: </b>
+    </div>
+    <div class="col-lg-12">
+      @tournament.organizer
+    </div>
+    <div class="col-lg-12">
+      <b>Delegado:</b>
+    </div>
+    <div class="col-lg-12">
+      @tournament.delegated
+    </div>
+
+
+
+  </div>
+
+  <div class="row space-top">
+    <div class="col-lg-12">
+      <b>Detalles: </b>
+    </div>
+    <div class="col-lg-12">
+      @tournament.details
+    </div>
+
+  </div>
+
+
+
+
+
+
+}

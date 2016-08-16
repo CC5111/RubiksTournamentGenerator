@@ -115,7 +115,7 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
             name <- names
           } yield TournamentsEventF(1, false, name, 0, 0)
 
-          Ok(views.html.tournament_events(tournamentId, tournamentEventForm.fill(NewEvents(existingEvents))))
+          Ok(views.html.tournament_addevents(tournamentId, tournamentEventForm.fill(NewEvents(existingEvents))))
         }
       }
       else
@@ -129,7 +129,7 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
       formWithErrors => {
         Future{
           println(formWithErrors)
-          BadRequest(views.html.tournament_events(tournamentId, formWithErrors))
+          BadRequest(views.html.tournament_addevents(tournamentId, formWithErrors))
         }
       },
       events => {
@@ -152,5 +152,29 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
   def seeTournaments() = Action.async{implicit request =>
     tournamentDAO.all.map{ tournaments =>
     Ok(views.html.tournament_see(tournaments.toList))}
+  }
+
+  def tournamentIndex(tournamentId: Long) = Action.async{implicit request =>
+
+    tournamentDAO.byId(tournamentId).flatMap{
+      case Some(tournament) => Future(Ok(views.html.tournament_index(tournament)))
+      case _ => Future(NotFound)
+
+    }
+
+  }
+
+  def tournamentEvents(tournamentId: Long) = Action.async{implicit request =>
+
+    tournamentEventsDAO.all.map{
+      case events =>
+        val tournamentEvents = for{
+          event <- events if (event.tournamentId == tournamentId)
+        } yield event
+
+        Ok(views.html.tournament_events(tournamentEvents.toList,tournamentId))
+
+    }
+
   }
 }
