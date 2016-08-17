@@ -60,6 +60,7 @@ class TournamentEventsDAO @Inject()(protected val dbConfigProvider: DatabaseConf
     db.run(tableQ.result)
   }
 
+
   def insert(tournamentEvent: TournamentEvents): Future[Long] ={
     db.run(tableQ returning tableQ.map(_.id) += tournamentEvent)
   }
@@ -67,6 +68,10 @@ class TournamentEventsDAO @Inject()(protected val dbConfigProvider: DatabaseConf
 
   def byId(id: Long): Future[Option[TournamentEvents]] = {
     db.run(tableQ.filter(_.id === id).result.headOption)
+  }
+
+  def byTournamentId(tournmentId: Long): Future[Seq[TournamentEvents]] = {
+    db.run(tableQ.filter(_.tournamentId == tournmentId).result)
   }
 
   def update(tournamentEvent: TournamentEvents): Future[Int] = {
@@ -201,6 +206,10 @@ class EventParticipantDAO @Inject()(protected val dbConfigProvider: DatabaseConf
 
   def byId(id: Long): Future[Option[EventParticipant]] = {
     db.run(tableQ.filter(_.id === id).result.headOption)
+  }
+
+  def byParticipantID(tournamentEventId: Long, participantId: Long): Future[Seq[EventParticipant]] = {
+    db.run(tableQ.filter(_.participantId === participantId).filter(_.eventId === tournamentEventId).result)
   }
 
   def update(eventParticipant: EventParticipant): Future[Int] = {

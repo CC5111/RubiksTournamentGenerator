@@ -41,8 +41,15 @@ case class ParticipantEventF(id: Long,
                              eventId: Long)
 case class NewParticipantEvents(events: Seq[ParticipantEventF])
 
+case class EventsByParticipant(participant: Participant,
+                               events: Seq[String])
+
 @Singleton
-class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDAO, tournamentEventsDAO: TournamentEventsDAO, participantDAO: ParticipantDAO, eventParticipantDAO: EventParticipantDAO)
+class RubiksController @Inject()(tournamentDAO: TournamentDAO,
+                                 eventDAO: EventDAO,
+                                 tournamentEventsDAO: TournamentEventsDAO,
+                                 participantDAO: ParticipantDAO,
+                                 eventParticipantDAO: EventParticipantDAO)
                                 (implicit ec: ExecutionContext, system: ActorSystem, mat: akka.stream.Materializer) extends Controller {
 
   def index = Action{implicit request =>
@@ -276,6 +283,7 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
   }
 
 
+
   def tournamentParticipants(tournamentId: Long) = Action.async{implicit request =>
 
     participantDAO.all.map{
@@ -283,6 +291,17 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO, eventDAO: EventDA
         val tournamentParticipants = for{
           participant <- participants if (participant.tournamentId == tournamentId)
         } yield participant
+
+        val futureEvents = tournamentEventsDAO.byTournamentId(tournamentId)
+
+
+        val participantsEvents = for{
+          participant <- participants
+          events <- futureEvents
+          event <- events
+        }yield eventParticipantDAO.byParticipantID(event.id, participant.id)
+
+        println(participantsEvents)
 
         Ok(views.html.tournament_participants(tournamentParticipants.toList,tournamentId))
 
