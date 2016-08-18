@@ -1,83 +1,124 @@
 @(tournament: models.entities.Tournament)(implicit msg: play.api.i18n.Messages)
 
-@tournament_main(tournament.name,tournament.id){
+  @tournament_main(tournament.name,tournament.id){
 
 
-  <!-- Page Header -->
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">
+    <!-- Page Header -->
+    <div class="row">
+      <div class="col-lg-12">
+        <h1 class="page-header">
         @tournament.name
-      </h1>
+        </h1>
+      </div>
     </div>
-  </div>
-    <!-- /.row -->
+      <!-- /.row -->
+    
+    <div class="col-lg-3 col-md-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <div class="pull-left">Fechas</div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-5">
+              <div class="huge">@tournament.start_date</div>
+            </div>
+            <div class="col-xs-2">
+              <div>-</div>
+            </div>
+            <div class="col-xs-5 text-right">
+              <div class="huge">@tournament.end_date</div>
+            </div>
+          </div>
+        </div>
 
-  <div class="row">
-    <div class="col-lg-12">
-      <b>Del:</b> @tournament.start_date
-    </div>
-    <div class="col-lg-12">
-      <b>Al:</b> @tournament.end_date
-    </div>
-
-  </div>
-  <div class="row">
-    <div class="col-lg-12">
-    <b>Lugar:</b>
-    </div>
-    <div class="col-lg-12">
-    @tournament.place
-    </div>
-    <div class="col-lg-12">
-    @tournament.address
-    </div>
-    <div class="col-lg-12">
-    @tournament.city
-    </div>
-
-  </div>
-
-  <div class="row space-top">
-    <div class="col-lg-12">
-      <b>Sitio Web: </b>
-    </div>
-    <div class="col-lg-12">
-    <a href="@tournament.website">@tournament.website</a>
-    </div>
-  </div>
-
-  <div class="row space-top">
-    <div class="col-lg-12">
-      <b>Organizador: </b>
-    </div>
-    <div class="col-lg-12">
-      @tournament.organizer
-    </div>
-    <div class="col-lg-12">
-      <b>Delegado:</b>
-    </div>
-    <div class="col-lg-12">
-      @tournament.delegated
+      </div>
     </div>
 
-
-
-  </div>
-
-  <div class="row space-top">
-    <div class="col-lg-12">
-      <b>Detalles: </b>
+    <div class="col-lg-3 col-md-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <div class="pull-left">Lugar</div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="huge">@tournament.place</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="huge">@tournament.address</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="huge">@tournament.city</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-lg-12">
-      @tournament.details
+
+    <div class="col-lg-3 col-md-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <div class="pull-left">Organizador</div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="huge">@tournament.organizer</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-heading panel-noborder">
+          <div class="pull-left">Delegado</div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="huge">@tournament.delegated</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-  </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <div class="pull-left">Detalles</div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="huge">@tournament.details</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-heading panel-noborder">
+          <div class="pull-left">Sitio web</div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="huge">@tournament.website</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
 
 
 
-}
+  }

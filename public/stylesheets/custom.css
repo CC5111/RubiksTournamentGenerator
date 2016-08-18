@@ -15,3 +15,9 @@ body {
 footer {
     margin: 50px 0;
 }
+
+.panel-noborder{
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+
+}
