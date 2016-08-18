@@ -21,3 +21,9 @@ footer {
     border-top-right-radius: 0px;
 
 }
+
+.img-index{
+    max-height: 200px;
+    max-width: 300px;
+    display: initial;
+}
