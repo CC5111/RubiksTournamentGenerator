@@ -1,4 +1,4 @@
-@(participants: List[models.entities.Participant], tournamentId: Long)(implicit msg: play.api.i18n.Messages)
+@(participantWithEvents: List[controllers.EventsByParticipant], tournamentId: Long, te: List[models.entities.TournamentEvents])(implicit msg: play.api.i18n.Messages)
 
 @tournament_main("Participantes",tournamentId){
 
@@ -18,13 +18,25 @@
       <tr>
         <th>Nombre</th>
         <th>WCAID</th>
+        @for(ev <- te){
+          <th>@ev.title</th>
+        }
       </tr>
     </thead>
     <tbody>
-    @for(participant <- participants){
+    @for(pwe <- participantWithEvents) {
       <tr>
-        <td>@participant.name</td>
-        <td>@participant.WCAID</td>
+        <td>@pwe.participant.name</td>
+        <td>@pwe.participant.WCAID</td>
+        @for(ev <- te) {
+          <td>
+          @for( e <- pwe.events ) {
+            @if(ev.id == e.eventId){
+              O
+            }
+          }
+          </td>
+        }
 
       </tr>
     }

@@ -42,7 +42,7 @@ case class ParticipantEventF(id: Long,
 case class NewParticipantEvents(events: Seq[ParticipantEventF])
 
 case class EventsByParticipant(participant: Participant,
-                               events: Seq[String])
+                               events: Seq[EventParticipant])
 
 @Singleton
 class RubiksController @Inject()(tournamentDAO: TournamentDAO,
@@ -286,26 +286,21 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO,
 
   def tournamentParticipants(tournamentId: Long) = Action.async{implicit request =>
 
-    participantDAO.all.map{
-      case participants =>
-        val tournamentParticipants = for{
-          participant <- participants if (participant.tournamentId == tournamentId)
-        } yield participant
+      val participantAndEvents = for{
+        participants <- participantDAO.getParticipantWithEvents(tournamentId)
+        events <- tournamentEventsDAO.byTournamentId(tournamentId)
+      }yield (participants, events)
 
-        val futureEvents = tournamentEventsDAO.byTournamentId(tournamentId)
-
-
-        val participantsEvents = for{
-          participant <- participants
-          events <- futureEvents
-          event <- events
-        }yield eventParticipantDAO.byParticipantID(event.id, participant.id)
-
-        println(participantsEvents)
-
-        Ok(views.html.tournament_participants(tournamentParticipants.toList,tournamentId))
-
-    }
+      participantAndEvents.map{
+        case (pevts, evts) =>
+          val ep = for{
+            pevt <- pevts
+          }yield EventsByParticipant(pevt._1,pevt._2)
+          val evs = for{
+            ev <- evts
+          }yield ev
+          Ok(views.html.tournament_participants(ep.toList,tournamentId,evs.toList))
+      }
 
   }
 }

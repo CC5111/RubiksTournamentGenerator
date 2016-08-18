@@ -70,8 +70,8 @@ class TournamentEventsDAO @Inject()(protected val dbConfigProvider: DatabaseConf
     db.run(tableQ.filter(_.id === id).result.headOption)
   }
 
-  def byTournamentId(tournmentId: Long): Future[Seq[TournamentEvents]] = {
-    db.run(tableQ.filter(_.tournamentId == tournmentId).result)
+  def byTournamentId(tournamentId: Long): Future[Seq[TournamentEvents]] = {
+    db.run(tableQ.filter(_.tournamentId === tournamentId).result)
   }
 
   def update(tournamentEvent: TournamentEvents): Future[Int] = {
@@ -79,6 +79,14 @@ class TournamentEventsDAO @Inject()(protected val dbConfigProvider: DatabaseConf
       db.run(tableQ.filter(_.id === tournamentEvent.id).update(tournamentEvent))
     else
       Future{0}
+  }
+
+  def getByParticipantId(id: Long) = {
+    val q = for {
+      ep <- SlickTables.eventParticipantQ if ep.participantId === id
+      e <- tableQ if e.id===ep.eventId
+    } yield e
+    db.run(q.result)
   }
 }
 
@@ -184,6 +192,18 @@ class ParticipantDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPro
 
   def exists(id : Long) : Future[Boolean] =
     db.run(tableQ.filter(i => i.id === id).exists.result)
+
+  def getParticipantWithEvents(tournamentId: Long): Future[Seq[(Participant, Seq[EventParticipant])]] = {
+    val query = for{
+      p <- tableQ if p.tournamentId === tournamentId
+      te <- SlickTables.tournamentEventsQ if te.tournamentId === tournamentId
+      pe <- SlickTables.eventParticipantQ if p.id === pe.participantId && pe.eventId === te.id
+
+    } yield (p, pe)
+    db.run(query.result).map{ case result =>
+        result.groupBy(_._1).toSeq.map{case (p, par) => (p,par.map(_._2))}.sortBy(_._1.name)
+    }
+}
 
 
 }
