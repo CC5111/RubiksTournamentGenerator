@@ -24,7 +24,8 @@ GET     /tournament/addParticipant/events   controllers.RubiksController.addPart
 
 GET     /tournament/participants        controllers.RubiksController.tournamentParticipants(tournamentId: Long)
 
-GET     /records                controllers.RecordsController.indexRecords
+GET     /records                controllers.RubiksController.indexMedalTable
+
 
 # An example controller showing how to write asynchronous code
 GET     /supplier/:id                controllers.SuppliersController.supplier(id : Long)

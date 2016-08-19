@@ -1,0 +1,58 @@
+@()
+
+@main("Pagina de inicio"){
+
+
+  <!-- Page Header -->
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">
+        Medallero
+      </h1>
+    </div>
+  </div>
+    <!-- /.row -->
+
+    <!-- Projects Row -->
+  <div class="row">
+    <div class="col-md-3 portfolio-item" style="text-align: center ;">
+      <a href="#">
+        <img class="img-responsive img-index" src="@routes.Assets.versioned("images/cup.png")" alt="torneos" style="max-height: 200px; max-width: 300px">
+      </a>
+      <h3>
+        <a href="@routes.RubiksController.indexTournament()">TORNEOS</a>
+      </h3>
+    </div>
+    <div class="col-md-3 portfolio-item" style="text-align: center ;">
+      <a href="#">
+        <img class="img-responsive img-index" src="@routes.Assets.versioned("images/statistic.png")" alt="estadisticas" style="max-height: 200px; max-width: 300px">
+      </a>
+      <h3>
+        <a href="#">ESTADISTICAS</a>
+      </h3>
+    </div>
+    <div class="col-md-3 portfolio-item" style="text-align: center ;">
+      <a href="#">
+        <img class="img-responsive img-index" src="@routes.Assets.versioned("images/chronometer.png")" alt="records" style="max-height: 200px; max-width: 300px">
+      </a>
+      <h3>
+        <a href="#">RECORDS</a>
+      </h3>
+    </div>
+    <div class="col-md-3 portfolio-item" style="text-align: center ;">
+      <a href="#">
+        <img class="img-responsive img-index" src="@routes.Assets.versioned("images/medal.png")" alt="medallero">
+      </a>
+      <h3>
+        <a href="#">MEDALLERO</a>
+      </h3>
+    </div>
+  </div>
+
+
+    <!-- /.row -->
+
+
+
+
+}
