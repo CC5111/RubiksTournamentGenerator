@@ -307,6 +307,14 @@ class RubiksController @Inject()(tournamentDAO: TournamentDAO,
   def indexMedalTable = Action{ implicit request =>
     Ok(views.html.medal_table())
   }
+
+  def indexRecords = Action{ implicit request =>
+    Ok(views.html.records())
+  }
+
+  def indexStatistics = Action{ implicit request =>
+    Ok(views.html.statistics())
+  }
 }
 
 
